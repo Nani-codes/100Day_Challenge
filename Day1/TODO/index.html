@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="input-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter title" />
+      </div>
+      <div class="input-group">
+        <label for="description">Description:</label>
+        <input type="text" id="description" placeholder="Enter description" />
+      </div>
+
+      <button class="btn" onclick="onPress()">Send</button>
+    </div>
+    <div class="content">
+      <div id="content">
+        
+      </div>
+    </div>
+    <script>
+      function deleteTodo(data) { 
+        console.log(data);
+        fetch("http://localhost:3000/todos/"+data, {
+          method: "DELETE",
+        }).then(callbackfn);
+      }
+      function callback3(data) {
+        console.log(data);
+        let parentElement = document.getElementById("content");
+
+        for (let i = 0; i < data.length; i++) {
+          let child = document.createElement("div");
+
+          let child1 =  document.createElement("h2");
+          child1.innerHTML = (`Title: ${data[i].title}`)
+
+          let child2 =  document.createElement("h3");
+          child2.innerHTML = (`Description: ${data[i].description}`)
+
+          let child3 = document.createElement("button");
+          child3.innerHTML = ("Delete");
+          child3.setAttribute("onClick", "deleteTodo("+data[i].id+")")
+
+          child.appendChild(child1)
+          child.appendChild(child2)
+          child.appendChild(child3)
+
+          parentElement.appendChild(child);
+        }
+      }
+      function callback2(resp) {
+        resp.json().then(callback3);
+      }
+
+      function getData() {
+        fetch("http://localhost:3000/todos", {
+          method: "GET",
+        }).then(callback2);
+      }
+      getData();
+      function parsing(data) {
+        console.log(data);
+      }
+
+      function callbackfn(resp) {
+        resp.json().then(parsing);
+      }
+
+      function onPress(params) {
+        let title = document.getElementById("title").value;
+        let description = document.getElementById("description").value;
+
+        fetch("http://localhost:3000/todos", {
+          method: "POST",
+          body: JSON.stringify({
+            title: title,
+            description: description,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(callbackfn);
+      }
+    </script>
+  </body>
+</html>
