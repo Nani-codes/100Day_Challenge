@@ -1,40 +1,31 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      title: "Gym",
-      description: "Go to Gym",
-      id: "1",
-    },
-    {
-      title: "Swim",
-      description: "Go for a swim",
-      id: "2",
-    },
-  ]);
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/todos", { method: "GET" }).then((res) => {
+      res.json().then((data) => {
+        console.log(data);
+        setTodos(data);
+      });
+    });
+  }, []);
 
   return (
     <>
-      <h1>HELLO</h1>
-
       {todos.map((todo) => {
-        return <div key={todo.id}>
-          <Todo  title = {todo.title} description={todo.description}></Todo>
-        </div>;
+        return (
+          <div key={todo.id}>
+            <h1>{todo.title}</h1>
+            <h2>{todo.description}</h2>
+            <button>Delete</button>
+          </div>
+        );
       })}
     </>
-  );
-}
-
-function Todo(props) {
-  return (
-    <div>
-      {props.title} <br />
-      {props.description}
-    </div>
   );
 }
 
