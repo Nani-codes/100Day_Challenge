@@ -1,12 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/Day1/TODO/node_modules
-/Day3/vite-project/node_modules
-/Day2/Authentication/node_modules
-/Day4/node_modules
-/demo/node_modules
-
+/node_modules
 /.pnp
 .pnp.js
 
